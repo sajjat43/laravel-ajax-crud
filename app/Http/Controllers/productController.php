@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Product;
+use Illuminate\Http\Request;
+
+class productController extends Controller
+{
+    public function productBlade(){
+return view('product.product');
+    }
+
+    public function productView(){
+        $product=Product::orderBy('id','DESC')->get();
+        return response()->json($product);
+    }
+    public function productStore(Request $request){
+        // $image_name = null;
+        // if ($request->hasfile('Cimage')) {
+        //     $image_name = date('Ymdhis') . '.' . $request->file('image')->getClientOriginalExtension();
+        //     $request->file('image')->storeAs('/uploads/product', $image_name);
+        // }
+
+        $product=Product::create([
+            'name'=>$request->name,
+            'description'=>$request->description,
+            'Qty'=>$request->Qty,
+            'price'=>$request->price,
+            // 'image'=>$request->image,
+        ]);
+
+        return response()->json($product);
+    }
+}
