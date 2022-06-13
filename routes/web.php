@@ -33,3 +33,8 @@ route::get('product/blade',[productController::class, 'productBlade'])->name('pr
 route::get('product/view',[productController::class,'productView'])->name('product.view');
 
 route::POST('product/store',[productController::class,'productStore'])->name('product.store');
+
+
+route::get('edit/product/{id}',[productController::class,'editProduct'])->name('edit.product');
+
+route::post('/product/update/{id}',[productController::class,  'updateProduct'])->name('update.product');

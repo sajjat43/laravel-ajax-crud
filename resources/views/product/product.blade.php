@@ -21,7 +21,8 @@
                 <div class="col-sm-8">
 
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    <button type="button" id="editModal" class="btn btn-primary" data-toggle="modal"
+                        data-target="#exampleModal">
                         Create Product
                     </button>
 
@@ -59,7 +60,8 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add product</h5>
+                    <h5 class="modal-title" id="addText">Add product</h5>
+                    <h5 class="modal-title" id="updateText">Update product</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -81,10 +83,13 @@
                         <label for="">Price</label>
                         <input type="text" name="price" id="price" required class="form-control">
                     </div>
+                    <input type="hidden" id="id">
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button id="submit" onclick="addProduct()" type="submit" class="btn btn-primary">Create</button>
+                        <button id="update" onclick="updateProduct()" type="submit"
+                            class="btn btn-primary">Update</button>
 
                 </form>
             </div>
@@ -101,11 +106,10 @@
 
     {{-- ========================== ajax query=================== --}}
     <script>
-        //         $.ajaxSetup({
-//     header:{
-//         'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-//     }
-// })
+        $('#addText').show();
+        $('#submit').show();
+        $('#updateText').hide();
+        $('#update').hide();
 
 function allData(){
     $.ajax({
@@ -124,7 +128,7 @@ function allData(){
                 product =product + "<td>"+value.price+"</td>"
                 
                 product =product + "<td>"
-                product =product + "<button class='btn btn-sm btn-primary mr2'>Edit</button>"
+                product =product + "<button class='btn btn-sm btn-primary mr2' onclick='editProduct("+value.id+")' >Edit</button>"
                 product =product + "<button class='btn btn-sm btn-danger mr2'>Delete</button>"
                 product =product + "<td>"
                 product =product + "<tr>"
@@ -160,12 +164,65 @@ $.ajax({
     success:function(data){
         clearData();
         allData(); 
+        $('#exampleModal').modal('hide');
         console.log('successfuly Created data');
 
     }
 })
 
  }
+
+//  --------- edit product------
+
+function editProduct(id){
+    $.ajax({
+        type:"GET",
+        dataType:"json",
+        url:"/edit/product/"+id,
+        success: function(product){
+           $('#addText').hide();
+           $('#submit').hide();
+           $('#updateText').show();
+           $('#update').show();
+           $('#name').val(product.name);
+           $('#description').val(product.description);
+           $('#Qty').val(product.Qty);
+           $('#price').val(product.price);  
+           $('#id').val(product.id);
+           $('#exampleModal').modal('show');
+            console.log(product);
+        }
+    })
+}
+function  updateProduct(){
+    var id =$('#id').val();
+    var name = $('#name').val();
+    var description = $('#description').val();
+    var Qty = $('#Qty').val();
+    var price = $('#price').val();
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        data: {
+            "_token":"{{csrf_token()}}",
+        name:name,
+        description:description,
+        Qty:Qty,
+        price:price
+    },
+    url:"/product/update/"+id,
+    success: function (product){
+        clearData();
+        allData();
+        $('#exampleModal').modal('hide');
+        console.log('product update successfully');
+        
+    },
+      
+    })
+}
+
     </script>
 </body>
 
