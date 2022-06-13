@@ -83,6 +83,7 @@
                         <label for="">Price</label>
                         <input type="text" name="price" id="price" required class="form-control">
                     </div>
+                    
                     <input type="hidden" id="id">
 
                     <div class="modal-footer">
