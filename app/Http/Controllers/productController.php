@@ -51,4 +51,10 @@ return view('product.product');
         ]);
         return response()->json($product); 
     }
+
+    public function deleteProduct(Request $request,$id){
+
+        $product =Product::find($id)->delete();
+        return response()->json($product);
+    }
 }

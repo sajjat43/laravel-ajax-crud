@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\userController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\productController;
+use App\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,3 +39,5 @@ route::POST('product/store',[productController::class,'productStore'])->name('pr
 route::get('edit/product/{id}',[productController::class,'editProduct'])->name('edit.product');
 
 route::post('/product/update/{id}',[productController::class,  'updateProduct'])->name('update.product');
+
+route::get('/product/delete/{id}',[productController::class, 'deleteProduct'])->name('delete.product');

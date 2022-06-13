@@ -62,7 +62,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="addText">Add product</h5>
                     <h5 class="modal-title" id="updateText">Update product</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" id="closex" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -86,7 +86,7 @@
                     <input type="hidden" id="id">
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" id="close" data-dismiss="modal">Close</button>
                         <button id="submit" onclick="addProduct()" type="submit" class="btn btn-primary">Create</button>
                         <button id="update" onclick="updateProduct()" type="submit"
                             class="btn btn-primary">Update</button>
@@ -107,7 +107,7 @@
     {{-- ========================== ajax query=================== --}}
     <script>
         $('#addText').show();
-        $('#submit').show();
+        $('#submit').show();  
         $('#updateText').hide();
         $('#update').hide();
 
@@ -129,7 +129,7 @@ function allData(){
                 
                 product =product + "<td>"
                 product =product + "<button class='btn btn-sm btn-primary mr2' onclick='editProduct("+value.id+")' >Edit</button>"
-                product =product + "<button class='btn btn-sm btn-danger mr2'>Delete</button>"
+                product =product + "<button class='btn btn-sm btn-danger mr2' onclick='deleteProduct("+value.id+")'>Delete</button>"
                 product =product + "<td>"
                 product =product + "<tr>"
             })
@@ -161,11 +161,14 @@ $.ajax({
         Qty:Qty,
         price:price},
     url: "{{route('product.store')}}",
-    success:function(data){
+    success:function(data){ 
         clearData();
         allData(); 
         $('#exampleModal').modal('hide');
-        console.log('successfuly Created data');
+        $('#close').show();
+           $('#closex').show();
+
+       
 
     }
 })
@@ -190,6 +193,8 @@ function editProduct(id){
            $('#price').val(product.price);  
            $('#id').val(product.id);
            $('#exampleModal').modal('show');
+           $('#close').hide();
+           $('#closex').hide();
             console.log(product);
         }
     })
@@ -216,10 +221,27 @@ function  updateProduct(){
         clearData();
         allData();
         $('#exampleModal').modal('hide');
+        $('#addText').show();
+        $('#submit').show();
+        $('#updateText').hide();
+        $('#update').hide();
         console.log('product update successfully');
         
     },
       
+    })
+}
+// -----------delete --- product ------- 
+
+function deleteProduct(id){
+    $.ajax({
+        type:"GET",
+        dataType:"json",
+        url: "/product/delete/"+id,
+        success:function(product){
+            console.log('deleted');
+            allData();
+        }
     })
 }
 
