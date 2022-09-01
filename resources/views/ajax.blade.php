@@ -64,7 +64,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="javascript:void(0)">
+                <form action="javascript:void(0)" enctype="multipart/form-data">
                     <div class="modal-body">
                         <label for="">Category Name:</label>
                         <input type="text" name="Cname" id="Cname" class="form-control">

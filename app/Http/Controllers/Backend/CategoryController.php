@@ -24,7 +24,7 @@ class CategoryController extends Controller
     }
     public function categoryCreate(Request $request){
         
-       
+    //    dd($request->all());
         $image_Cname = null;
         if ($request->hasfile('Cimage')) {
             $image_Cname = date('Ymdhis') . '.' . $request->file('Cimage')->getClientOriginalExtension();
