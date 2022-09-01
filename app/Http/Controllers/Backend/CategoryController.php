@@ -24,22 +24,19 @@ class CategoryController extends Controller
     }
     public function categoryCreate(Request $request){
         
+       
         $image_Cname = null;
         if ($request->hasfile('Cimage')) {
             $image_Cname = date('Ymdhis') . '.' . $request->file('Cimage')->getClientOriginalExtension();
-            $request->file('Cimage')->storeAs('/uploads/category', $image_Cname);
+            $request->file('Cimage')->storeAs('/category', $image_Cname);
         }
         $category=Category::create([
             'Cname'=>$request->Cname,
             'Cdescription'=>$request->Cdescription,
             'Cimage'=>$request->Cimage,
         ]);
-
-        return response()->json([
-            'success'=>true,
-            'data'=>$category,
-            'message'=>'Category created successful.'
-        ]);
+// dd($category);
+        return response()->json([$category]);
 
     }
     

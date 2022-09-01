@@ -2,8 +2,7 @@
 <html lang="en">
 
 <head>
-    {{--
-    <meta name="csrf-token" content="{{ csrf_token()}}">--}}
+    <meta name="csrf-token" content="{{ csrf_token()}}">
     <meta charset="UTF-8">
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -82,18 +81,17 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button onclick="setData()" id="submit" type="submit" class="btn btn-primary">Save
                             changes</button>
-
                 </form>
             </div>
         </div>
     </div>
 
 
-
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+    <script src="js/jquery-mod.js"></script>
 
     {{-- ========================== ajax query=================== --}}
 
@@ -102,47 +100,21 @@
         getData()
   
 })
-// function load()
-// {
-//   getData()
-// }
-    // function setdata(){
-    //     var Cname=$("#Cname").val();
-    //     var Cdescription=$("#Cdescription").val();
-    //     var Cimage=$("#Cimage").val();
-    //     $("#submit").html('Please Wait...');
-    //     $("#submit"). attr("disabled", true);
 
-    //     $.ajax({
-    //         url: '{{route('ajax.category.create')}}',
-    //         data: {
-    //             _token:'{{csrf_token()}}',
-    //             Cname:Cname,
-    //             Cdescription:Cdescription,
-    //             Cimage:Cimage
-    //         },
-    //         method: 'POST',
-    //         success: function(response){
-    //             console.log(response);
-    //             window.location.reload();
-    //             $("#submit").html('submit');
-    //             $("#submit"). attr("disabled", false);
-
-    //         }
-    //     })
-    // }
     function setData(){
     var Cname = $("#Cname").val();
     var Cdescription = $("#Cdescription").val();
     var Cimage = $("#Cimage").val();
-  
+
     $("#submit").html('Please Wait...');
     $("#submit"). attr("disabled", true);
     $.ajax({
         url:'{{route('ajax.category.create')}}',
         data:{
             _token:'{{csrf_token()}}',
-            name:name
+            Cname:Cname,
+            Cdescription:Cdescription,
+            Cimage:Cimage
         },
         method:'post',
         success:function (response){
