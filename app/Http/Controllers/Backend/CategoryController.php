@@ -30,10 +30,11 @@ class CategoryController extends Controller
             $image_Cname = date('Ymdhis') . '.' . $request->file('Cimage')->getClientOriginalExtension();
             $request->file('Cimage')->storeAs('/category', $image_Cname);
         }
+        // Category::create($data);
         $category=Category::create([
             'Cname'=>$request->Cname,
             'Cdescription'=>$request->Cdescription,
-            'Cimage'=>$request->Cimage,
+            'Cimage'=>$image_Cname,
         ]);
 // dd($category);
         return response()->json([$category]);

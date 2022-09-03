@@ -64,7 +64,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="javascript:void(0)" enctype="multipart/form-data">
+                <form action="javascript:void(0)" id="upload_form" enctype="multipart/form-data">
+                    @csrf
                     <div class="modal-body">
                         <label for="">Category Name:</label>
                         <input type="text" name="Cname" id="Cname" class="form-control">
@@ -79,9 +80,10 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button onclick="setData()" id="submit" type="submit" class="btn btn-primary">Save
+                        <button  id="submit" type="submit" onclick="setData()" class="btn btn-primary upload-image">Save
                             changes</button>
                 </form>
+                <span id="uploaded_image"></span>
             </div>
         </div>
     </div>
@@ -101,30 +103,52 @@
   
 })
 
-    function setData(){
-    var Cname = $("#Cname").val();
-    var Cdescription = $("#Cdescription").val();
-    var Cimage = $("#Cimage").val();
+//     function setData(){
+//     var Cname = $("#Cname").val();
+//     var Cdescription = $("#Cdescription").val();
+//     var Cimage = $("#Cimage").val();
 
-    $("#submit").html('Please Wait...');
-    $("#submit"). attr("disabled", true);
-    $.ajax({
-        url:'{{route('ajax.category.create')}}',
-        data:{
-            _token:'{{csrf_token()}}',
-            Cname:Cname,
-            Cdescription:Cdescription,
-            Cimage:Cimage
-        },
-        method:'post',
-        success:function (response){
-            console.log(response);
+//     $("#submit").html('Please Wait...');
+//     $("#submit"). attr("disabled", true);
+//     $.ajax({
+//         url:'{{route('ajax.category.create')}}',
+//         data:{
+//             _token:'{{csrf_token()}}',
+//             Cname:Cname,
+//             Cdescription:Cdescription,
+//             Cimage:Cimage
+//         },
+//         method:'post',
+//         success:function (response){
+//             console.log(response);
+//             window.location.reload();
+//             $("#submit").html('Submit');
+//             $("#submit"). attr("disabled", false);
+//         }
+//     })
+// }
+
+$(document).ready(function(){
+    $('#upload_form').on('submit',function(event){
+        event.preventDefault();
+        $.ajax({
+            url:'{{route('ajax.category.create')}}',
+            method:"POST",
+            data:new FormData(this),
+            dataType:'JSON',
+            contentType:false,
+            cache:false,
+            processData:false,
+            success:function(data){
+                // console.log(response);
             window.location.reload();
-            $("#submit").html('Submit');
+             $("#submit").html('Submit');
             $("#submit"). attr("disabled", false);
-        }
+            }
+        })
     })
-}
+})
+
     function getData()
 {
     $.ajax({
@@ -133,11 +157,12 @@
         success:function (response){
             for (data of response.data)
             {
-                $('#myTable tbody').append($('<tr>')
-                    .append($('<td>', { text: data.id }))
-                    .append($('<td>', { text: data.Cname }))
-                        .append($('<td>', { text: data.Cdescription }))
-                )
+                $('#myTable tbody').append('<tr>\
+                    <td>'+data.id+'</td>\
+                    <td>'+data.Cname+'</td>\
+                    <td>'+data.Cdescription+'</td>\
+                    <td><img src="uploads/category/'+data.Cimage+' " width="50px" height="50px"></td>\
+                     </tr>');
             }
         }
     })
