@@ -17,12 +17,17 @@ return view('product.product');
     }
     public function productStore(Request $request){
        
-
+        $image_name = null;
+        if ($request->hasfile('image')) {
+            $image_name = date('Ymdhis') . '.' . $request->file('image')->getClientOriginalExtension();
+            $request->file('image')->storeAs('/product', $image_name);
+        }
         $product=Product::create([
             'name'=>$request->name,
             'description'=>$request->description,
             'Qty'=>$request->Qty,
             'price'=>$request->price,
+            'image'=>$image_name,
             
         ]);
 
