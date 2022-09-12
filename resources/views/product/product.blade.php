@@ -140,7 +140,7 @@ function allData(){
 }
 allData();
 function clearData(){
-var name = $('#name').val('');
+    var name = $('#name').val('');
 var description = $('#description').val('');
 var Qty = $('#Qty').val('');
 var price = $('#price').val('');
