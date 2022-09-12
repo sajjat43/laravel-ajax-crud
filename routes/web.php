@@ -26,6 +26,7 @@ Route::get('/ajax/get', [CategoryController::class, 'get'])->name('ajax.get');
 
 Route::get('/ajax/list', [CategoryController::class, 'list'])->name('list');
 Route::post('/ajax/category/create', [CategoryController::class, 'categoryCreate'])->name('ajax.category.create');
+Route::get('/ajax/category/delete/{id}', [CategoryController::class, 'categoryDelete'])->name('ajax.category.delete');
 
 
 // -------- product -----

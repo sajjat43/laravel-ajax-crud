@@ -40,5 +40,11 @@ class CategoryController extends Controller
         return response()->json([$category]);
 
     }
-    
+  
+    public function categoryDelete($id){
+        $category=Category::find($id)->delete();
+        return response()->json($category);
+        
+    }
+
 }

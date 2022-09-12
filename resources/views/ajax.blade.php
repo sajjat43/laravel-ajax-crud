@@ -80,8 +80,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button  id="submit" type="submit" onclick="setData()" class="btn btn-primary upload-image">Save
-                            changes</button>
+                        <button  id="submit" type="submit"  class="btn btn-primary upload-image">submit</button>
                 </form>
                 <span id="uploaded_image"></span>
             </div>
@@ -98,10 +97,11 @@
     {{-- ========================== ajax query=================== --}}
 
     <script type="text/javascript">
-        $(document).ready(function(){    
-        getData()
+//         $(document).ready(function(){    
+//         getData()
+//         clearData()
   
-})
+// })
 
 //     function setData(){
 //     var Cname = $("#Cname").val();
@@ -128,6 +128,51 @@
 //     })
 // }
 
+
+    function getData()
+{
+    $.ajax({
+        url:'{{route('ajax.get')}}',
+        method:'get',
+        success:function (response){
+            // clearData()
+            for (data of response.data)
+            {
+                $('#myTable tbody').append('<tr>\
+                    <td>'+data.id+'</td>\
+                    <td>'+data.Cname+'</td>\
+                    <td>'+data.Cdescription+'</td>\
+                    <td><img src="uploads/category/'+data.Cimage+' " width="50px" height="50px"></td>\
+                   <td> <button class="btn btn-sm btn-danger mr2" onclick="deleteCategory('+data.id+')">Delete</button></td>\
+                     </tr>');
+            }
+        }
+    })
+}
+
+// delete 
+
+getData()
+
+function clearData(){
+    var Cname = $('#Cname').val('');
+var Cdescription = $('#Cdescription').val('');
+var Cimage = $('#Cimage').val('');
+}
+function deleteCategory(id){
+    $.ajax({
+        type:"GET",
+        dataType:"json",
+        url:"/ajax/category/delete/"+id,
+        success:function(category){
+            console.log('delete category done');
+            clearData();
+            window.location.reload();   
+            
+        }
+    })
+}
+
 $(document).ready(function(){
     $('#upload_form').on('submit',function(event){
         event.preventDefault();
@@ -140,33 +185,16 @@ $(document).ready(function(){
             cache:false,
             processData:false,
             success:function(data){
-                // console.log(response);
+                clearData()
+                // getData()
             window.location.reload();
              $("#submit").html('Submit');
             $("#submit"). attr("disabled", false);
+            $('#exampleModal').modal('hide');
             }
         })
     })
 })
-
-    function getData()
-{
-    $.ajax({
-        url:'{{route('ajax.get')}}',
-        method:'get',
-        success:function (response){
-            for (data of response.data)
-            {
-                $('#myTable tbody').append('<tr>\
-                    <td>'+data.id+'</td>\
-                    <td>'+data.Cname+'</td>\
-                    <td>'+data.Cdescription+'</td>\
-                    <td><img src="uploads/category/'+data.Cimage+' " width="50px" height="50px"></td>\
-                     </tr>');
-            }
-        }
-    })
-}
     </script>
 
 
